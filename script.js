@@ -24,7 +24,7 @@ for(let i=0; i<9; i++) {
     var currentHour = currentMoment.hour();
     if (time<currentHour) {
         textEl.addClass('past');
-        //textEl.attr('disabled','disabled');
+        textEl.attr('disabled','disabled');
     }
     else if (time===currentHour) {
         textEl.addClass('present');
@@ -32,15 +32,26 @@ for(let i=0; i<9; i++) {
     else {
         textEl.addClass('future');
     }
-    textEl.addClass(`hour${time}`);
-    saveBtn.addClass(`hour${time}`);
-
 
     //display in 12 hour time
     if (time>12) {
         time=time-12;
     }
     
+    //gives the textarea a class 'hours{time}' and saveBtn a matching ID
+    textEl.addClass(`hour${time}`);
+    saveBtn.attr('id',`hour${time}`);
+    //the text of hourEl displays the time block in question
     hourEl.text(time);
 }
 
+container.click(function(event){
+    //if a save button was just clicked
+    var target = $(event.target);
+    if (target.hasClass('saveBtn')){
+        var id =target.attr('id'); //gets the id from savebutton
+        var textValue = $(`.textarea.${id}`).val(); //gets the contents of the right textarea by using the id from savebutton
+        localStorage.setItem(id,textValue); //stores to localstorage
+    }
+}
+)
